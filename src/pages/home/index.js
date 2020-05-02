@@ -77,10 +77,10 @@ class Home extends Component {
             {maxChildContentHeight &&
               <React.Fragment>
                 <Grid divided>
-                  <Grid.Column width={5}>
+                  <Grid.Column width={4}>
                     <SpecializationNav height={maxChildContentHeight} />
                   </Grid.Column>
-                  <Grid.Column width={11}>
+                  <Grid.Column width={12}>
                     <SpecializationModules height={maxChildContentHeight} />
                   </Grid.Column>
                 </Grid>

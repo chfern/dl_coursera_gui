@@ -1,11 +1,16 @@
 /**
+ * Todo: Update comment
  * Shows tree view of:
  * Courses -> Weeks -> Lessons
  */
+import './specializationNav.css';
+
 import React, { Component } from "react"
 import { List } from 'semantic-ui-react'
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
+import NormalPrimaryColoredText from '../../../../shared/components/literature/NormalPrimaryColoredText';
+import NormalDarkColoredText from '../../../../shared/components/literature/NormalDarkColoredText';
 
 const { remote } = window.require("electron");
 const log = remote.require("electron-log");
@@ -16,11 +21,45 @@ class SpecializationNav extends Component {
   }
 
   mapCoursesToListItems(courses) {
-    return courses.map(course => {
-      const { id, name } = course
-      log.info(name)
+    const mapWeeksToListItems = (modules) => {
+      const mapLessonsToListItems = (lessons) => {
+        /**
+         * Lessons mapper
+         */
+        return lessons.map(({ name, id }) => {
+          return (
+            <List.Item key={`${id}__listitem`} className="nav-item">{name}</List.Item>
+          )
+        })
+      }
+
+      return modules.map(({ name, id, lessons }) => {
+        /**
+         * Modules mapper (for every week in the course)
+         */
+        return (
+          [
+            <List.Item key={`${id}__listitem`}><NormalDarkColoredText><strong>{name}</strong></NormalDarkColoredText>
+              <List.List>
+                {mapLessonsToListItems(lessons)}
+              </List.List>
+            </List.Item>
+          ]
+        )
+      })
+    }
+
+    // Constructing tree for course navigation
+    return courses.map(({ id, name, modules }) => {
       return (
-        <List.Item active key={id}><strong>{name}</strong></List.Item>
+        [
+          <List.Item active key={id}>
+            <strong><NormalPrimaryColoredText>{name}</NormalPrimaryColoredText></strong>
+            <List.Item>
+              {mapWeeksToListItems(modules)}
+            </List.Item>
+          </List.Item>
+        ]
       )
     })
   }
@@ -33,14 +72,6 @@ class SpecializationNav extends Component {
         {courses &&
           <List link style={{ overflowY: 'scroll', maxHeight: `${height}px`, minHeight: `${height}px` }}>
             {this.mapCoursesToListItems(courses)}
-            {/* <List.Item active><strong>Divide and Conquer, Sorting and Searching, and Randomized Algorithms</strong></List.Item>
-        <List.Item as='a'>About</List.Item>
-        <List.Item as='a'>Jobs</List.Item>
-        <List.Item as='a'>Team</List.Item>
-        <List.Item active><strong>II. ASYMPTOTIC ANALYSIS</strong></List.Item>
-        <List.Item as='a'>About</List.Item>
-        <List.Item as='a'>Jobs</List.Item>
-        <List.Item as='a'>Team</List.Item> */}
           </List>
         }
       </React.Fragment>

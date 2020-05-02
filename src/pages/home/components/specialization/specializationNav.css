@@ -1,0 +1,22 @@
+div.item{
+  padding: 2px 0px 2px 5px !important;
+}
+
+div.list {
+  padding: 0 !important;
+}
+
+div.list:nth-child(2) {
+  padding-left: 10px !important;
+}
+
+.nav-item {
+  color: rgba(0,0,0, .6) !important;
+  cursor: pointer !important;
+  transition: .1s color ease;
+  margin-top: 2.5px;
+}
+
+.nav-item:hover {
+  color: rgba(0,0,0, .95) !important;
+}
