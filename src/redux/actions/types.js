@@ -1,0 +1,2 @@
+// Course
+export const UPDATE_COURSE_ROOT_DIR = "UPDATE_COURSE_ROOT_DIR"

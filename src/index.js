@@ -1,12 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import Home from './pages/home';
 import * as serviceWorker from './serviceWorker';
+
+const electron = window.require('electron');
+const fs = electron.remote.require('fs');
+const {ipcRenderer, remote}  = electron
+const log = remote.require("electron-log");
+/**
+ * Electron listeners
+ */
+ipcRenderer.on('course-root-dir', (evt, courseRootDir) => {
+  log.error("asd")
+  console.log("dispatch:", courseRootDir)
+})
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Home />
   </React.StrictMode>,
   document.getElementById('root')
 );
