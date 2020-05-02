@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import { connect } from "react-redux"
 import { Divider, Grid } from 'semantic-ui-react'
 
 /**
@@ -11,7 +12,7 @@ import CourseModules from "./components/courseModules"
 const { remote } = window.require("electron");
 const log = remote.require("electron-log");
 
-export default class Home extends Component {
+class Home extends Component {
   constants() {
     return {
       VERTICAL_MARGIN: 15,
@@ -21,7 +22,7 @@ export default class Home extends Component {
 
   constructor(props) {
     super(props)
-    this.state = { width: 0, height: 0, contentHeight: null };
+    this.state = { maxContentWidth: null, maxContentHeight: null, maxChildContentHeight: null };
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     this.courseHeaderRef = React.createRef();
   }
@@ -37,53 +38,67 @@ export default class Home extends Component {
 
   updateWindowDimensions() {
     log.info(`updateWindowDimensions, window.innerHeight ${window.innerHeight}`)
-    this.setState({ width: window.innerWidth, height: window.innerHeight }, () => {
-      this.setState({ ...this.state, contentHeight: this.getMaxWindowHeightPx() - this.courseHeaderRef.offsetHeight })
+    const titleBarHeight = remote.getCurrentWindow().getSize()[1] - remote.getCurrentWindow().getContentSize()[1]
+    const windowHeight = window.innerHeight - titleBarHeight
+    const maxContentHeight = windowHeight - titleBarHeight - (this.constants().VERTICAL_MARGIN * 2);
+    this.setState({
+      maxContentWidth: window.innerWidth - this.constants().DUMMY_SCROLLBAR_SIZE,
+      maxContentHeight: maxContentHeight,
+      maxChildContentHeight: maxContentHeight - this.courseHeaderRef.offsetHeight
     });
   }
 
-  getMaxWindowHeightPx() {
-    const { height } = this.state
-    const titleBarHeight = remote.getCurrentWindow().getSize()[1] - remote.getCurrentWindow().getContentSize()[1]
-    return height - titleBarHeight - (this.constants().VERTICAL_MARGIN * 2);
+  componentDidUpdate(prevProps, prevState) {
+    // Check if chosen course data has changed
+    const { courseCrawlData: prevCourseCrawlData } = prevProps
+    const { courseCrawlData: currCourseCrawlData } = this.props
+
+    if (!(prevCourseCrawlData == null && currCourseCrawlData == null)) {
+      if (prevCourseCrawlData == null && currCourseCrawlData != null) {
+        this.updateWindowDimensions()
+      } else if (prevCourseCrawlData.id != currCourseCrawlData.id) {
+        this.updateWindowDimensions()
+      }
+    }
   }
 
-  // getWindowScrollbarWidthPx() {
-  //   const { width } = this.state
-  //   const windowWidth = remote.getCurrentWindow().getBounds().width;
-  //   log.info(`windowWidth: ${windowWidth}`)
-  //   log.info(`width: ${width}`)
-  //   const scrollBarWidth = windowWidth - width;
-  //   return scrollBarWidth
-  // }
-
   render() {
-    const { contentHeight, width } = this.state
+    const { courseCrawlData } = this.props
+    const { maxContentWidth, maxContentHeight, maxChildContentHeight } = this.state
     return (
-      <div style={{ margin: `${this.constants().VERTICAL_MARGIN}px 1rem`, height: `${this.getMaxWindowHeightPx()}px`, width: `${width - this.constants().DUMMY_SCROLLBAR_SIZE}px`, position: 'fixed' }}>
-        <div ref={(node) => this.courseHeaderRef = node}>
-          <CourseHeader
-            title="Algorithms and Data Structure"
-            type="Spec"
-          />
-        </div>
-        <Divider />
-        {contentHeight &&
+      <div style={{ margin: `${this.constants().VERTICAL_MARGIN}px 1rem`, height: `${maxContentHeight}px`, width: `${maxContentWidth}px`, position: 'fixed' }}>
+        {
+          courseCrawlData &&
           <React.Fragment>
-            <Grid divided>
-              <Grid.Column width={4}>
-                <CourseNav />
-              </Grid.Column>
-              <Grid.Column width={12}>
-                <CourseModules
-                  height={contentHeight}
-                />
-              </Grid.Column>
-            </Grid>
+            <div ref={(node) => this.courseHeaderRef = node}>
+              <CourseHeader />
+            </div>
             <Divider />
+            {maxChildContentHeight &&
+              <React.Fragment>
+                <Grid divided>
+                  <Grid.Column width={4}>
+                    <CourseNav height={maxChildContentHeight} />
+                  </Grid.Column>
+                  <Grid.Column width={12}>
+                    <CourseModules height={maxChildContentHeight} />
+                  </Grid.Column>
+                </Grid>
+                <Divider />
+              </React.Fragment>
+            }
           </React.Fragment>
         }
       </div>
     )
   }
 }
+
+const mapStateToProps = ({ course }) => {
+  const { courseCrawlData } = course
+  return {
+    courseCrawlData
+  }
+}
+
+export default connect(mapStateToProps, null)(Home)

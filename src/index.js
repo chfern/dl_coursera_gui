@@ -14,11 +14,12 @@ import {
   updateCourseCrawlData
 } from "./redux/actions/course"
 import store from "./redux/store"
+import { Provider } from 'react-redux';
 
 /**
  * Electron & Electron listeners
  */
-const {ipcRenderer, remote}  = window.require('electron');
+const { ipcRenderer, remote } = window.require('electron');
 const log = remote.require("electron-log");
 
 ipcRenderer.on('course-root-dir', (evt, courseRootDir) => {
@@ -29,7 +30,9 @@ ipcRenderer.on('course-root-dir', (evt, courseRootDir) => {
  * React renderer
  */
 ReactDOM.render(
-  <Home />,
+  <Provider store={store}>
+    <Home />
+  </Provider>,
   document.getElementById('root')
 );
 

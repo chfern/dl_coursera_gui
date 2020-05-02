@@ -2,6 +2,9 @@ import {
   UPDATE_COURSE_CRAWL_DATA
 } from '../actions/types'
 
+const { remote } = window.require('electron');
+const log = remote.require("electron-log");
+
 const INITIAL_STATE = {
   courseCrawlData: null
 }

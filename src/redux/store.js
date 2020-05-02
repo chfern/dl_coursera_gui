@@ -5,8 +5,8 @@ import errorReducer from "./reducers/error"
 
 const store = createStore(
   combineReducers({
-    courseReducer,
-    errorReducer
+    course: courseReducer,
+    error: errorReducer
   }),
   {},
   applyMiddleware(thunk)
