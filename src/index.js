@@ -29,9 +29,7 @@ ipcRenderer.on('course-root-dir', (evt, courseRootDir) => {
  * React renderer
  */
 ReactDOM.render(
-  <React.StrictMode>
-    <Home />
-  </React.StrictMode>,
+  <Home />,
   document.getElementById('root')
 );
 
