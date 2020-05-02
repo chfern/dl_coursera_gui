@@ -26,6 +26,9 @@ ipcRenderer.on('course-root-dir', (evt, courseRootDir) => {
   store.dispatch(updateCourseCrawlData(courseRootDir))
 })
 
+// mock data
+store.dispatch(updateCourseCrawlData('/Users/fernandochristyanto/Temp/dl_coursera/algorithms-specialization'))
+
 /**
  * React renderer
  */

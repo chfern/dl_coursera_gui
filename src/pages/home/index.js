@@ -6,8 +6,8 @@ import { Divider, Grid } from 'semantic-ui-react'
  * Components
  */
 import CourseHeader from "./components/courseHeader"
-import CourseNav from "./components/courseNav"
-import CourseModules from "./components/courseModules"
+import SpecializationNav from "./components/specialization/specializationNav"
+import SpecializationModules from "./components/specialization/specializationModules"
 
 const { remote } = window.require("electron");
 const log = remote.require("electron-log");
@@ -77,11 +77,11 @@ class Home extends Component {
             {maxChildContentHeight &&
               <React.Fragment>
                 <Grid divided>
-                  <Grid.Column width={4}>
-                    <CourseNav height={maxChildContentHeight} />
+                  <Grid.Column width={5}>
+                    <SpecializationNav height={maxChildContentHeight} />
                   </Grid.Column>
-                  <Grid.Column width={12}>
-                    <CourseModules height={maxChildContentHeight} />
+                  <Grid.Column width={11}>
+                    <SpecializationModules height={maxChildContentHeight} />
                   </Grid.Column>
                 </Grid>
                 <Divider />
