@@ -7,7 +7,7 @@ import { Divider, Grid } from 'semantic-ui-react'
  */
 import CourseHeader from "./components/courseHeader"
 import SpecializationNav from "./components/specialization/specializationNav"
-import SpecializationModules from "./components/specialization/specializationModules"
+import SpecializationLessonItems from "./components/specialization/SpecializationLessonItems"
 
 const { remote } = window.require("electron");
 const log = remote.require("electron-log");
@@ -81,7 +81,7 @@ class Home extends Component {
                     <SpecializationNav height={maxChildContentHeight} />
                   </Grid.Column>
                   <Grid.Column width={12}>
-                    <SpecializationModules height={maxChildContentHeight} />
+                    <SpecializationLessonItems height={maxChildContentHeight} />
                   </Grid.Column>
                 </Grid>
                 <Divider />
