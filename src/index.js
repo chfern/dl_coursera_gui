@@ -4,7 +4,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Home from './pages/home';
+import Home from './pages/home/index';
 import * as serviceWorker from './serviceWorker';
 
 /**
@@ -12,8 +12,8 @@ import * as serviceWorker from './serviceWorker';
  */
 import {
   updateCourseCrawlData
-} from "./redux/actions/course"
-import store from "./redux/store"
+} from "./shared/redux/actions/course"
+import store from "./ducks/store"
 import { Provider } from 'react-redux';
 
 /**

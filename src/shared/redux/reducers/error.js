@@ -1,6 +1,6 @@
 import {
   UPDATE_ERROR
-} from '../actions/types'
+} from '../actions/error'
 
 const INITIAL_STATE = {
   errorMessage: null

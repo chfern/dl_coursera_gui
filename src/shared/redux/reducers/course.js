@@ -1,7 +1,6 @@
 import {
-  UPDATE_COURSE_CRAWL_DATA,
-  UPDATE_COURSE_ROOT_DIR
-} from '../actions/types'
+  UPDATE_COURSE_CRAWL_DATA
+} from '../actions/course'
 
 const { remote } = window.require('electron');
 const log = remote.require("electron-log");
@@ -14,9 +13,7 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case UPDATE_COURSE_CRAWL_DATA:
-      return { ...state, courseCrawlData: action.courseCrawlData }
-    case UPDATE_COURSE_ROOT_DIR:
-      return { ...state, courseRootDir: action.courseRootDir }
+      return { ...state, courseRootDir: action.courseRootDir, courseCrawlData: action.courseCrawlData }
     default:
       return state;
   }

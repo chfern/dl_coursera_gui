@@ -1,6 +1,5 @@
-import {
-  UPDATE_ERROR
-} from './types'
+// Types
+export const UPDATE_ERROR = "UPDATE_ERROR"
 
 const { remote } = window.require('electron');
 const log = remote.require("electron-log");

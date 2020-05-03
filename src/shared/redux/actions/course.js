@@ -1,9 +1,7 @@
-import {
-  UPDATE_COURSE_CRAWL_DATA,
-  UPDATE_COURSE_ROOT_DIR
-} from './types'
-const fs = window.require('fs');
+// Types
+export const UPDATE_COURSE_CRAWL_DATA = "UPDATE_COURSE_CRAWL_DATA"
 
+const fs = window.require('fs');
 const { remote } = window.require('electron');
 const log = remote.require("electron-log");
 
@@ -14,8 +12,7 @@ export const updateCourseCrawlData = (courseRootDir) => dispatch => {
       if (file.endsWith(".crawl.json")) {
         log.debug(`[redux.actions.course.updateCourseRootDir] found crawl json: ${file}`)
         const courseCrawlData = JSON.parse(fs.readFileSync(`${courseRootDir}/${file}`, 'utf8'));
-        dispatch({ type: UPDATE_COURSE_CRAWL_DATA, courseCrawlData: courseCrawlData })
-        dispatch({ type: UPDATE_COURSE_ROOT_DIR, courseRootDir: courseRootDir })
+        dispatch({ type: UPDATE_COURSE_CRAWL_DATA, courseRootDir: courseRootDir, courseCrawlData: courseCrawlData })
         log.debug(`[redux.actions.course.updateCourseRootDir] courseCrawlData dispatched!`)
       }
     });
